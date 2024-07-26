@@ -10,15 +10,16 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "flask": "^0.2.10",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "clsx": "^2.1.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "clsx": "^2.1.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",

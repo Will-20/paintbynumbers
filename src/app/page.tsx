@@ -8,28 +8,31 @@ import Link from 'next/link';
 
 // Essential
 
-// TODO: Use Python script 
 // TODO: Design creation page
 // TODO: Make About, Demo and FAQ page
 // TODO: Host on server
 
 // Moderately Important
 
+// TODO: Speed up k-means?
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
-// TODO: Remove small reions of pixels from the image
 // TODO: Make slider colour not blue - maybe orange?
 
 // Low-Priority
 
 // TODO: Rename app to something better
+// TODO: Turn number of colours to max number of colours :P
 
-
-
+// Completed :)
+// TODO: Add numbers
+// TODO: Use Python script 
+// TODO: Remove small reions of pixels from the image
 
 
 
 export default function Home() {
+
   return (
     
     <div className="flex flex-col flex-auto place-content-stretch items-center justify-between pt-8 pl-24 pr-24 pb-24">
