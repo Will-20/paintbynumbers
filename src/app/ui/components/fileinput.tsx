@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 
 
@@ -8,28 +8,41 @@ import { useState } from "react";
 export const FileInput = () => {
 
   const [dragOver, setDragOver] = useState(false);
+  const [file, setFile] = useState<File | null>(null)
+  const [data, setData] = useState<{
+    image: string | null
+  }>({
+    image: null,
+  })
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLInputElement>) => {
     e.preventDefault()
     setDragOver(true)
   }
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLInputElement>) => {
     e.preventDefault()
     setDragOver(false)
   }
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setDragOver(true)
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
-      console.log("Wassup " + file.name)
-    }
-  }
-
-
+  const handleDrop = useCallback(
+    (event: React.DragEvent<HTMLInputElement>) => {
+      const file = event.currentTarget.files && event.currentTarget.files[0]
+      if (file) {
+        if (file.size / 1024 / 1024 > 20) {
+          console.log("File size too big (max 20MB)")
+        } else {
+          setFile(file)
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            setData((prev) => ({ ...prev, image: e.target?.result as string }))
+          }
+          reader.readAsDataURL(file)
+        }
+      }
+    },
+    [setData]
+  )
 
   const fileInput = async (event: React.ChangeEvent<HTMLInputElement>) => {
   console.log("Hello There")

@@ -7,12 +7,17 @@ import { FileInput } from "../ui/components/fileinput";
 
 
 export default function Create() {
-
+  const formData = new FormData()
+  formData.append("title", "body")
+  
   async function click () {
     try {
-    const res = await fetch("/api/hello");
+    const res = await fetch("/api/goodbye", {
+      method: "POST",
+      body: formData
+    }
+    );
     const data = await res.text();
-
     console.log(data)
 
     } catch (err) {

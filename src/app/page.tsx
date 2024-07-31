@@ -18,6 +18,7 @@ import Link from 'next/link';
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
 // TODO: Make slider colour not blue - maybe orange?
+// TODO: Look into cors
 
 // Low-Priority
 
