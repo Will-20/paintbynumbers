@@ -15,16 +15,18 @@ import Link from 'next/link';
 // Moderately Important
 
 // TODO: Speed up k-means?
+// TODO: Fix empty cluster bug
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
-// TODO: Make slider colour not blue - maybe orange?
 // TODO: Look into cors
 // TODO: Make file size too big notification
+// TODO: Make picture width customisable
 
 // Low-Priority
 
 // TODO: Rename app to something better
 // TODO: Turn number of colours to max number of colours :P
+// TODO: Make slider colour not blue - maybe orange?
 
 // Completed :)
 // TODO: Add numbers

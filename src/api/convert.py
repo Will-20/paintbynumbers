@@ -1,7 +1,7 @@
 
 from PIL import Image, ImageFilter
 import numpy as np
-
+import time
 from remove_small_pixels import remove_small_pixels
 
 # These functions return the centroids, they compute k-means
@@ -28,178 +28,80 @@ def redmean_closest_centroid(points, centroids):
     return np.argmin(distances, axis=0)
 
 def euclid_closest_centroid(points, centroids):
-    distances = np.sqrt(((points - centroids[:, np.newaxis])**2).sum(axis=2))
+    diff = points - centroids[:, np.newaxis]
+    distances = np.einsum('nkd,nkd->nk', diff, diff)  # We don't need to sqrt as it is monotonically increasing
     return np.argmin(distances, axis=0)
 
 def move_centroids(points, closest, centroids):
-    return np.array([points[closest==k].mean(axis=0) for k in range(centroids.shape[0])])
+    return np.stack([points[closest==k].mean(axis=0) for k in range(centroids.shape[0])])
 
 def get_k_colours(pixels, k, distance='euclidean'):
     centroids = initialize_centroids(pixels, k)
     if distance=='euclidean':
-        for i in range(20):
+        for i in range(10):
             closest = euclid_closest_centroid(pixels, centroids)
+            print("got closest")
             centroids = move_centroids(pixels, closest, centroids)
+            print("got centroids")
         return centroids
     elif distance == 'redmean':
-        for i in range(20):
+        for i in range(10):
             closest = redmean_closest_centroid(pixels, centroids)
             centroids = move_centroids(pixels, closest, centroids)
         return centroids
 
-
 # -----------------------------------------------------------------------------------------
-
-# def regionise_image(im, num_colours):
-#     width, height = im.size
-#     pixels = np.array(im).reshape(-1, 3)
-#     k_centroids = np.round(get_k_colours(pixels, 7)).astype(int)
-#     index_map = closest_centroid(pixels, k_centroids).reshape(height, width)
-#     regioned_image = k_centroids[index_map].astype(np.uint8)
-#     return Image.fromarray(regioned_image)
 
 def regionise_image(im, num_colours, distance='euclidean'):
     width, height = im.size
     pixels = np.array(im).astype('float32').reshape(width*height, 3)
     k_centroids = np.round(get_k_colours(pixels, num_colours)).astype(int)
-
     if distance == 'redmean':
         index_map = redmean_closest_centroid(pixels, k_centroids).reshape(height, width)
     else:
         index_map = euclid_closest_centroid(pixels, k_centroids).reshape(height, width)
     return index_map, k_centroids
 
-# TODO: Find some way of doing these functions in numpy?
-
-def getVicInVals(mat, x, y, r):
-    width = len(mat[0])
-    height = len(mat)
-    vicInVals = []
-    for xx in range(x-r, x+r+1):
-        for yy in range(y-r, y+r+1):
-            if (xx >= 0 and xx < width and yy >= 0 and yy < height):
-                vicInVals.append(mat[yy][xx])
-    return vicInVals
-
-def smooth(mat):
-    width = len(mat[0])
-    height = len(mat)
-    simp = [[0 for _ in range(width)] for _ in range(height)]
-    for y in range(height):
-        for x in range(width):
-            vicInVals = getVicInVals(mat, x, y, 4)
-            simp[y][x] = max(set(vicInVals), key=vicInVals.count)
-    return simp
-
-def neighboursSame(mat, x, y):
-    width = len(mat[0])
-    height = len(mat)
-    val = mat[y][x]
-    xRel = [1, 0]
-    yRel = [0, 1]
-    for i in range(2):
-        xx = x+xRel[i]
-        yy = y+yRel[i]
-        if (xx >= 0 and xx < width and yy >= 0 and yy < height):
-            if mat[yy][xx] != val:
-                return False
-    return True
-
-def outline(mat):
-    width = len(mat[0])
-    height = len(mat)
-    line = np.array([[[255,255,255] for _ in range(width)] for _ in range(height)])
-    for y in range(height):
-        for x in range(width):
-            if not neighboursSame(mat, x, y):
-                line[y][x][0] = 0
-                line[y][x][1] = 0
-                line[y][x][2] = 0
-            
-    return line.astype(np.uint8)
-
-
-
-
 # Converts an image into its contours
-def convert(image, num_colours):
-
-    # image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/tiger.jpg").convert('RGB')
-    # image.show()
-
-    # resize image
+def convert(image: Image, num_colours: int):
 
     image = image.convert('RGB')
+
+    # Resize image
+    start = time.time()
 
     mywidth = 2000
     wpercent = (mywidth/float(image.size[0]))
     myheight = int((float(image.size[1])*float(wpercent)))
     resized_image = image.resize((mywidth,myheight), resample=Image.Resampling.HAMMING).filter(ImageFilter.BLUR)
 
-    print("Resized Image")
+    print("Resized Image " + str(time.time() - start) + "s")
 
     # Euclidean-colourise
 
     index_map, k_centroids = regionise_image(resized_image, num_colours, distance='euclidean')
+    print("Obtained Colours " + str(time.time() - start) + "s")
 
-    print("Obtained Colours")
-
-    index_map = smooth(index_map)
     index_map, outline_with_numbers_image = remove_small_pixels(index_map)
     regioned_image = k_centroids[index_map].astype(np.uint8)
     
-    print("Regioned Image")
+    print("Regioned Image " + str(time.time() - start) + "s")
 
     # Get outline
 
     regioned_image = k_centroids[index_map].astype(np.uint8)
+    
     smoothed_im = Image.fromarray(regioned_image)
-
     outline_image = Image.fromarray(outline_with_numbers_image)
-    outline_image.save("image_outline.png")
+    
     smoothed_im.save("image.png")
+    outline_image.save("image_outline.png")
 
-    print("Saved Images")
+    print("Saved Images " + str(time.time() - start) + "s")
 
 def main():
     image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/paintbynumbers/tiger.jpg")
     convert(image, 40)
-
-
-    # smoothed_im = im.filter(ImageFilter.SMOOTH_MORE)
-
-    # im.show("Original")
-    # regionise_image(im, num_colours).show("Original Regionised")
-    # regionise_image(smoothed_im, num_colours).show("Smooth Regionised")
-
-
-
-# with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_index.pkl", "wb") as file:
-    #     pickle.dump(index_map, file)
-
-    # with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_centroids.pkl", "wb") as file:
-    #     pickle.dump(k_centroids, file)
-
-    # Redmean-colourise
-
-    # index_map, k_centroids = regionise_image(resized_image, num_colours, distance='redmean')
-    # index_map = smooth(index_map)
-    # regioned_image = k_centroids[index_map].astype(np.uint8)
-    # smoothed_im = Image.fromarray(regioned_image)
-    # smoothed_im.show(title=str(num_colours))
-
-
-# index_map, k_centroids = regionise_image(im, num_colours)
-    # index_map = smooth(index_map)
-
-    # regioned_image = k_centroids[index_map].astype(np.uint8)
-    # smoothed_im = Image.fromarray(regioned_image)
-    # smoothed_im.show(title=str(num_colours))
-
-    # ol = outline(index_map)
-
-    # outline_image = Image.fromarray(ol)
-    # outline_image.show()
 
     
 if __name__ == "__main__":
