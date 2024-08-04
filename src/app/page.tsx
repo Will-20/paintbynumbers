@@ -19,6 +19,7 @@ import Link from 'next/link';
 // TODO: Make Hero Image
 // TODO: Make slider colour not blue - maybe orange?
 // TODO: Look into cors
+// TODO: Make file size too big notification
 
 // Low-Priority
 
@@ -29,6 +30,7 @@ import Link from 'next/link';
 // TODO: Add numbers
 // TODO: Use Python script 
 // TODO: Remove small reions of pixels from the image
+// TODO: Link file upload
 
 
 

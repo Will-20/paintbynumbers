@@ -1,8 +1,8 @@
 
 from PIL import Image, ImageFilter
 import numpy as np
-import time
-import pickle
+
+from remove_small_pixels import remove_small_pixels
 
 # These functions return the centroids, they compute k-means
 # -----------------------------------------------------------------------------------------
@@ -122,46 +122,63 @@ def outline(mat):
 
 
 # Converts an image into its contours
-def convert(num_colours):
+def convert(image, num_colours):
 
-    blah = time.time()
-
-    image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/tiger.jpg").convert('RGB')
-    image.show()
+    # image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/tiger.jpg").convert('RGB')
+    # image.show()
 
     # resize image
+
+    image = image.convert('RGB')
 
     mywidth = 2000
     wpercent = (mywidth/float(image.size[0]))
     myheight = int((float(image.size[1])*float(wpercent)))
     resized_image = image.resize((mywidth,myheight), resample=Image.Resampling.HAMMING).filter(ImageFilter.BLUR)
 
-    blah2 = time.time()
-    print(f"Time taken to resize image: {blah2-blah}")
-    
+    print("Resized Image")
 
     # Euclidean-colourise
 
     index_map, k_centroids = regionise_image(resized_image, num_colours, distance='euclidean')
+
+    print("Obtained Colours")
+
     index_map = smooth(index_map)
+    index_map, outline_with_numbers_image = remove_small_pixels(index_map)
+    regioned_image = k_centroids[index_map].astype(np.uint8)
+    
+    print("Regioned Image")
+
+    # Get outline
+
     regioned_image = k_centroids[index_map].astype(np.uint8)
     smoothed_im = Image.fromarray(regioned_image)
-    smoothed_im.show()
 
-    blah3 = time.time()
-    print(f"Time taken to colour image: {blah3-blah2}")
+    outline_image = Image.fromarray(outline_with_numbers_image)
+    outline_image.save("image_outline.png")
+    smoothed_im.save("image.png")
 
-    smoothed_im.save("/Users/Somethingsensible/personal_projects/paintbynumbers/test_tiger.png", "PNG")
+    print("Saved Images")
 
-    
+def main():
+    image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/paintbynumbers/tiger.jpg")
+    convert(image, 40)
 
-    blah4 = time.time()
 
-    with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_index.pkl", "wb") as file:
-        pickle.dump(index_map, file)
+    # smoothed_im = im.filter(ImageFilter.SMOOTH_MORE)
 
-    with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_centroids.pkl", "wb") as file:
-        pickle.dump(k_centroids, file)
+    # im.show("Original")
+    # regionise_image(im, num_colours).show("Original Regionised")
+    # regionise_image(smoothed_im, num_colours).show("Smooth Regionised")
+
+
+
+# with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_index.pkl", "wb") as file:
+    #     pickle.dump(index_map, file)
+
+    # with open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated_centroids.pkl", "wb") as file:
+    #     pickle.dump(k_centroids, file)
 
     # Redmean-colourise
 
@@ -170,23 +187,6 @@ def convert(num_colours):
     # regioned_image = k_centroids[index_map].astype(np.uint8)
     # smoothed_im = Image.fromarray(regioned_image)
     # smoothed_im.show(title=str(num_colours))
-
-
-    # Get outline
-
-    # ol = outline(index_map)
-    # outline_image = Image.fromarray(ol)
-    # outline_image.show()
-
-def main():
-    convert(40)
-
-
-    # smoothed_im = im.filter(ImageFilter.SMOOTH_MORE)
-
-    # im.show("Original")
-    # regionise_image(im, num_colours).show("Original Regionised")
-    # regionise_image(smoothed_im, num_colours).show("Smooth Regionised")
 
 
 # index_map, k_centroids = regionise_image(im, num_colours)

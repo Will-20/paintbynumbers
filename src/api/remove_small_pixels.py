@@ -83,8 +83,8 @@ def get_regions(mat):
                 dfs(r, c, region)
                 number_positions.append((get_position(r, c, mat), mat[c][r]))
                 region += 1
-
-    return regions, number_positions
+    return number_positions
+    # return regions, number_positions
 
 import random
 
@@ -98,9 +98,10 @@ def generate_color():
   return [r, g, b] 
 
 def draw_point(mat, i, j, colour):
-    mat[i][j][0] = colour[0]
-    mat[i][j][1] = colour[1]
-    mat[i][j][2] = colour[2]
+    if i >= 0 and i < len(mat) and j >= 0 and j < len(mat[0]):
+        mat[i][j][0] = colour[0]
+        mat[i][j][1] = colour[1]
+        mat[i][j][2] = colour[2]
 
 def draw_numbers(mat, positions, text_colour):
     digit_map = {
@@ -116,8 +117,8 @@ def draw_numbers(mat, positions, text_colour):
         9: [(-1, -2), (1, -2), (-1, -1), (1, -1), (-1, 0), (1, 0), (1, 1), (1, 2), (0, -2), (0, 0)]
     }
 
-    left = 10
-    top = 10
+    left = 0
+    top = 0
 
     for pair in positions:
         pos, colour = pair
@@ -133,7 +134,19 @@ def draw_numbers(mat, positions, text_colour):
             for (j, i) in digit_map[int(string[1])]:
                 draw_point(mat, pos[0]+i, pos[1]+j+2, text_colour)
 
+def remove_small_pixels(index_map):
+    index_map = np.array(index_map)
 
+    for _ in range(5):
+        for _ in range(5):
+            index_map = majority(index_map, square(3))
+        index_map = majority(index_map, square(5))
+
+    outline_im = outline(index_map)
+    # padded_outline = np.pad(outline_im, ((10, 10), (10,10), (0,0)))
+    positions = get_regions(index_map)
+    draw_numbers(outline_im, positions, (0, 0, 0))
+    return index_map, outline_im
 
 def main():
     # image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/pixelated.png").convert('RGB')
