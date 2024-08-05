@@ -14,7 +14,6 @@ import Link from 'next/link';
 
 // Moderately Important
 
-// TODO: Speed up k-means?
 // TODO: Fix empty cluster bug
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
@@ -29,6 +28,7 @@ import Link from 'next/link';
 // TODO: Make slider colour not blue - maybe orange?
 
 // Completed :)
+// TODO: Speed up k-means?
 // TODO: Add numbers
 // TODO: Use Python script 
 // TODO: Remove small reions of pixels from the image

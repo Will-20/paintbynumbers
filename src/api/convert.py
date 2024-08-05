@@ -29,23 +29,23 @@ def redmean_closest_centroid(points, centroids):
 
 def euclid_closest_centroid(points, centroids):
     diff = points - centroids[:, np.newaxis]
-    distances = np.einsum('nkd,nkd->nk', diff, diff)  # We don't need to sqrt as it is monotonically increasing
+    distances = np.einsum('nkd,nkd->nk', diff, diff) 
     return np.argmin(distances, axis=0)
 
 def move_centroids(points, closest, centroids):
     return np.stack([points[closest==k].mean(axis=0) for k in range(centroids.shape[0])])
 
-def get_k_colours(pixels, k, distance='euclidean'):
+def get_k_colours(pixels, k, distance='euclidean', num_iter=5):
     centroids = initialize_centroids(pixels, k)
     if distance=='euclidean':
-        for i in range(10):
+        for i in range(num_iter):
             closest = euclid_closest_centroid(pixels, centroids)
             print("got closest")
             centroids = move_centroids(pixels, closest, centroids)
             print("got centroids")
         return centroids
     elif distance == 'redmean':
-        for i in range(10):
+        for i in range(num_iter):
             closest = redmean_closest_centroid(pixels, centroids)
             centroids = move_centroids(pixels, closest, centroids)
         return centroids
@@ -55,7 +55,7 @@ def get_k_colours(pixels, k, distance='euclidean'):
 def regionise_image(im, num_colours, distance='euclidean'):
     width, height = im.size
     pixels = np.array(im).astype('float32').reshape(width*height, 3)
-    k_centroids = np.round(get_k_colours(pixels, num_colours)).astype(int)
+    k_centroids = np.round(get_k_colours(pixels, num_colours))
     if distance == 'redmean':
         index_map = redmean_closest_centroid(pixels, k_centroids).reshape(height, width)
     else:

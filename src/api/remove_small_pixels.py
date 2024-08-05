@@ -3,34 +3,27 @@ import numpy as np
 import time
 from skimage.filters.rank import majority
 from skimage.morphology import square
-import pickle
+import random
 
-def neighboursSame(mat, x, y):
-    width = len(mat[0])
-    height = len(mat)
-    val = mat[y][x]
-    xRel = [1, 0]
-    yRel = [0, 1]
-    for i in range(2):
-        xx = x+xRel[i]
-        yy = y+yRel[i]
-        if (xx >= 0 and xx < width and yy >= 0 and yy < height):
-            if mat[yy][xx] != val:
-                return False
-    return True
+def smooth(mat):
+    for _ in range(5):
+        for _ in range(5):
+            mat = majority(mat, square(3))
+        mat = majority(mat, square(5))
+    return mat
+    
 
 def outline(mat):
-    width = len(mat[0])
-    height = len(mat)
-    line = np.array([[[255,255,255] for _ in range(width)] for _ in range(height)])
-    for y in range(height):
-        for x in range(width):
-            if not neighboursSame(mat, x, y):
-                line[y][x][0] = 200
-                line[y][x][1] = 200
-                line[y][x][2] = 200
-            
-    return line.astype(np.uint8)
+    shift_up = np.roll(mat, 1, axis=0)
+    shift_right = np.roll(mat, 1, axis=1)
+    shift_up[0, :] = mat[0, :]
+    shift_right[:, 0] = mat[:, 0]
+
+    outline_im = np.logical_and(mat == shift_up, mat == shift_right)
+
+    # outline_im = np.logical_and(np.logical_or((mat == shift_up),(shift_up == -1)),np.logical_or((mat == shift_right),(shift_right == -1)))
+    return np.stack((np.where(outline_im, 255, 200),)*3, axis=-1).astype(np.uint8)
+
 
 def get_position(r, c, mat):
     height, width = mat.shape[0], mat.shape[1]
@@ -86,8 +79,6 @@ def get_regions(mat):
     return number_positions
     # return regions, number_positions
 
-import random
-
 def generate_color(): 
   # Generate random values for red, green, and blue 
   r = random.randint(0, 255) 
@@ -135,15 +126,17 @@ def draw_numbers(mat, positions, text_colour):
                 draw_point(mat, pos[0]+i, pos[1]+j+2, text_colour)
 
 def remove_small_pixels(index_map):
-    index_map = np.array(index_map)
+    index_map = np.array(index_map).astype(np.uint8)
 
-    for _ in range(5):
-        for _ in range(5):
-            index_map = majority(index_map, square(3))
-        index_map = majority(index_map, square(5))
+    print("Started removing small pixels at: " + str(time.time()))
 
+    index_map = smooth(index_map)
+    
+    print("Smoothed map at: " + str(time.time()))
     outline_im = outline(index_map)
+    print("Outlined image at: " + str(time.time()))
     positions = get_regions(index_map)
+    print("Obtained positions at: " + str(time.time()))
     draw_numbers(outline_im, positions, (0, 0, 0))
+    print("Drew numbers at: " + str(time.time()))
     return index_map, outline_im
-
