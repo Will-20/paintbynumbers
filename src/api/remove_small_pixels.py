@@ -6,7 +6,7 @@ from skimage.morphology import square
 import random
 
 def smooth(mat):
-    for _ in range(5):
+    for _ in range(2):
         for _ in range(5):
             mat = majority(mat, square(3))
         mat = majority(mat, square(5))

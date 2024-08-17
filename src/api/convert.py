@@ -32,8 +32,19 @@ def euclid_closest_centroid(points, centroids):
     distances = np.einsum('nkd,nkd->nk', diff, diff) 
     return np.argmin(distances, axis=0)
 
+# Try to get new point for empty cluster?
 def move_centroids(points, closest, centroids):
-    return np.stack([points[closest==k].mean(axis=0) for k in range(centroids.shape[0])])
+    new_centroids = []
+    for k in range(centroids.shape[0]):
+        cluster = points[closest==k]
+        if cluster.shape[0] == 0:
+            new_centroids.append(points[np.random.choice(points.shape[0], 1, replace=False)][0])
+        else:
+            new_centroids.append(np.cbrt((cluster**3).mean(axis=0)))
+    return np.asarray(new_centroids)
+
+    # print(points[closest==0].shape)
+    # return np.stack([points[closest==k].mean(axis=0) for k in range(centroids.shape[0])])
 
 def get_k_colours(pixels, k, distance='euclidean', num_iter=5):
     centroids = initialize_centroids(pixels, k)
@@ -70,7 +81,7 @@ def convert(image: Image, num_colours: int):
     # Resize image
     start = time.time()
 
-    mywidth = 2000
+    mywidth = 1400
     wpercent = (mywidth/float(image.size[0]))
     myheight = int((float(image.size[1])*float(wpercent)))
     resized_image = image.resize((mywidth,myheight), resample=Image.Resampling.HAMMING).filter(ImageFilter.BLUR)
@@ -81,6 +92,8 @@ def convert(image: Image, num_colours: int):
 
     index_map, k_centroids = regionise_image(resized_image, num_colours, distance='euclidean')
     print("Obtained Colours " + str(time.time() - start) + "s")
+
+    print(k_centroids)
 
     index_map, outline_with_numbers_image = remove_small_pixels(index_map)
     regioned_image = k_centroids[index_map].astype(np.uint8)
@@ -101,7 +114,7 @@ def convert(image: Image, num_colours: int):
 
 def main():
     image = Image.open("/Users/Somethingsensible/personal_projects/paintbynumbers/paintbynumbers/tiger.jpg")
-    convert(image, 40)
+    convert(image, 30)
 
     
 if __name__ == "__main__":

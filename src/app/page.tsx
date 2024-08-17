@@ -33,7 +33,7 @@ import Link from 'next/link';
 // TODO: Use Python script 
 // TODO: Remove small reions of pixels from the image
 // TODO: Link file upload
-
+// TODO: Fix Wall-E bug
 
 
 export default function Home() {
