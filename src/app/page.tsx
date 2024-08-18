@@ -10,14 +10,13 @@ import Link from 'next/link';
 
 // TODO: Design creation page
 // TODO: Make About, Demo and FAQ page
-// TODO: Host on server
+// TODO: Change database storage to dual requests
 
 // Moderately Important
 
 // TODO: Fix empty cluster bug
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
-// TODO: Look into cors
 // TODO: Make file size too big notification
 // TODO: Make picture width customisable
 

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import FileUploadIcon from "../icons/fileuploadicon";
 
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 
 export const FileInput = () => {
@@ -23,10 +24,6 @@ export const FileInput = () => {
     setDragOver(false)
   }
 
-  async function send_file() {
-    
-  }
-
   const handleDrop = async (e: React.DragEvent<HTMLInputElement>) => {
     e.preventDefault();
     e.stopPropagation()
@@ -34,62 +31,48 @@ export const FileInput = () => {
 
     const file = e.dataTransfer.files[0]
 
+    sessionStorage.setItem("image_name", file.name)
+    console.log(file.type)
+
     if (file != null) {
-      const formData = new FormData();
 
-      formData.append('file', file)
-      console.log(file)
+      // We should upload to AWS here
 
-      const process_request = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
+      try {
 
-      if (process_request.ok) {
-        const process_request_json_data = await process_request.json();
-        console.log(process_request_json_data["output"])
+        console.log(process.env)
+
+        const client = new S3Client({ region: process.env.AWS_REGION })
+        const uploadCommand = new PutObjectCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: 'file-name',
+          Body: file,
+        });
+      
+        const response = await client.send(uploadCommand);
+        console.log(response)
+      } catch (error: any) {
+        console.log(error)
       }
 
+      // const formData = new FormData();
+
+      // formData.append('file', file)
+      // console.log(file)
+
+      // const process_request = await fetch('/api/upload', {
+      //   method: 'POST',
+      //   body: formData
+      // });
+
+      // if (process_request.ok) {
+      //   const process_request_json_data = await process_request.json();
+      //   console.log(process_request_json_data["output"])
+      // }
     } else {
       console.log("No file")
     }
-    
-
-    // const file = e.dataTransfer.files && e.dataTransfer.files[0]
-    // if (file) {
-    //   if (file.size / 1024 / 1024 > 50) {
-    //     console.log("File Size Too Big")
-    //   } else {
-    //     setFile(file)
-    //     console.log(file.name)
-    //     const reader = new FileReader()
-    //     reader.onload = (e) => {
-    //       setData((prev) => ({
-    //         ...prev,
-    //         image: e.target?.result as string,
-    //       }))
-    //     }
-    //     reader.readAsDataURL(file)
-    //     submitFile()
-    //   }
-    // } 
    }
-
-  // function submitFile() {
-  //   setSaving(true)
-  //   fetch('/api/upload', {
-  //     method: 'POST',
-  //     headers: { 'content-type': file?.type || 'application/octet-stream' },
-  //     body: file,
-  //   }).then(async (res) => {
-  //     if (res.status == 200) {
-  //       console.log((await res.text()))
-  //       console.log(data)
-  //     } else {
-  //       console.log(res.status)
-  //     }
-  //   })
-  // }
 
   return (
     <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} className="flex items-center justify-center w-7/12 group" onDrop = {handleDrop}>

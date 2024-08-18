@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { ColourTag } from '../ui/components/colourtag'
+import { ColourTag } from '../../ui/components/colourtag'
  
 export default function Page() {
 
