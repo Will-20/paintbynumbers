@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import FileUploadIcon from "../icons/fileuploadicon";
-
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 
 export const FileInput = () => {
@@ -25,6 +24,7 @@ export const FileInput = () => {
   }
 
   const handleDrop = async (e: React.DragEvent<HTMLInputElement>) => {
+    
     e.preventDefault();
     e.stopPropagation()
     setDragOver(false)
@@ -39,9 +39,8 @@ export const FileInput = () => {
       // We should upload to AWS here
 
       try {
-
+        
         console.log(process.env)
-
         const client = new S3Client({ region: process.env.AWS_REGION })
         const uploadCommand = new PutObjectCommand({
           Bucket: process.env.AWS_BUCKET_NAME,

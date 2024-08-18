@@ -4,7 +4,7 @@ type Props = { children: React.ReactNode }
 
 
 // The color code should be in the form #000000
-export const ColourTag = ({ colourCode }: { colourCode: string }) => {
+const ColourTag = ({ colourCode }: { colourCode: string }) => {
 
   const hexNumber = parseInt('0x' + colourCode.slice(1))
 
@@ -21,6 +21,6 @@ export const ColourTag = ({ colourCode }: { colourCode: string }) => {
       </p>
     </div>
   );
-}
+}; 
 
-// bg-
+export default ColourTag;

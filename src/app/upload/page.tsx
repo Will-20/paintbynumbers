@@ -1,10 +1,8 @@
 import Image from 'next/image'
-import { ColourTag } from '../../ui/components/colourtag'
+import ColourTag from '../ui/components/colourtag'
  
 export default function Page() {
 
-
-  
   return (
     <div className="flex justify-evenly items-center w-full space-x-10 my-20">
       <div className="flex space-y-4 flex-col">
@@ -51,4 +49,4 @@ export default function Page() {
 
     
   )
-}
+};
