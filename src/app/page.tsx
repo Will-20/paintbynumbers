@@ -10,30 +10,35 @@ import Link from 'next/link';
 
 // TODO: Design creation page
 // TODO: Make About, Demo and FAQ page
-// TODO: Change database storage to dual requests
+// TODO: Host python backend separately. 
 
 // Moderately Important
 
-// TODO: Fix empty cluster bug
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
 // TODO: Make file size too big notification
-// TODO: Make picture width customisable
 
 // Low-Priority
 
 // TODO: Rename app to something better
 // TODO: Turn number of colours to max number of colours :P
 // TODO: Make slider colour not blue - maybe orange?
+// TODO: Make sure file upload formats are correct
+// TODO: Add github source link to pages (look at vercel blob example)
+// TODO: Update loading tag status info
 
 // Completed :)
 // TODO: Speed up k-means?
+// TODO: Fix empty cluster bug
 // TODO: Add numbers
 // TODO: Use Python script 
 // TODO: Remove small reions of pixels from the image
 // TODO: Link file upload
 // TODO: Fix Wall-E bug
-
+// TODO: Make picture width customisable + append to form data
+// TODO: Find out way to remove secretkey env call in aws credentials
+// TODO: Image Preview for upload (look at vercel blob example)
+// TODO: Create loading page for upload
 
 export default function Home() {
 
