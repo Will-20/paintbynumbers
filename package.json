@@ -12,25 +12,25 @@
     "@aws-sdk/client-s3": "^3.637.0",
     "@aws-sdk/s3-request-presigner": "^3.637.0",
     "@vercel/kv": "^2.0.0",
-    "aws-sdk": "^2.1677.0",
+    "aws-sdk": "^2.1691.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "flask": "^0.2.10",
     "fs": "0.0.1-security",
-    "next": "^14.2.5",
+    "next": "^14.2.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "vercel": "^32.3.0"
+    "vercel": "^32.7.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
     "clsx": "^2.1.1",
-    "eslint": "^8",
+    "eslint": "^8.57.0",
     "eslint-config-next": "14.2.5",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.11",
+    "typescript": "^5.6.2"
   }
 }

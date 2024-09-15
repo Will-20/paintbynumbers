@@ -27,6 +27,14 @@ export default function Page() {
   const [tags, setTags] = useState<string[]>([])
   const [colourJson, setColourJson] = useState("")
 
+  const client = new S3Client({
+    region: process.env.NEXT_PUBLIC_AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
+      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
+    },
+  })
+
   const downloadColours = async () => {
     console.log(tags)
     if (tags.length != 0) {
@@ -82,15 +90,6 @@ export default function Page() {
         console.log(stat)
         setStatus(stat)
         if ((stat === "Finished" || stat === "Filling in regions" || stat === "Uploading Images") && tags.length == 0) {
-          
-          const client = new S3Client({
-            region: process.env.NEXT_PUBLIC_AWS_REGION,
-            credentials: {
-              accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
-              secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
-            },
-          })
-
           try {
                   // Get the object from the Amazon S3 bucket. It is returned as a ReadableStream.
             const data = await client.send(new GetObjectCommand({
@@ -112,18 +111,9 @@ export default function Page() {
             console.log(error)
           }
 
-          
         }
         if (stat === "Finished") {
           try {
-            const client = new S3Client({
-              region: process.env.NEXT_PUBLIC_AWS_REGION,
-              credentials: {
-                accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
-                secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
-              },
-            })
-    
             const filledBucketParams = {
               Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
               Key: imageId + "_filled",
