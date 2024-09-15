@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import DownloadIcon from '../ui/icons/downloadicon'
 import { useEffect } from 'react'
 import { serverProgress, uploadToServer } from '@/api/imagefetch'
@@ -10,14 +9,22 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { Loading } from '../ui/components/loading'
 import Taglist from '../ui/components/taglist'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 export default function Page() {
 
   const searchParams = useSearchParams()
+
   const imageId = searchParams.get("id") ?? ""
   const filename = searchParams.get("filename") ?? ""
   const num_colours = searchParams.get("colours") ?? "20"
   const width = searchParams.get("width") ?? "1400"
+
+  console.log(imageId)
+  console.log(filename)
+  console.log(num_colours)
+  console.log(width)
 
   const [allImages, setAllImages] = useState<string[]>([])
   const [index, setIndex] = useState(0)
@@ -153,7 +160,7 @@ export default function Page() {
   return (
 
     <div className="flex flex-row justify-evenly items-center w-full m-10 space-x-10">
-      
+      <Suspense>
       <div className="flex flex-col justify-between items-center h-full space-y-5 w-full">
         <div className="flex justify-center items-center h-full w-full shadow-lg border-x-8 border-x-white overflow-scroll relative rounded-lg bg-slate-700">
           <Loading status={status}/>
@@ -199,6 +206,7 @@ export default function Page() {
           </button>
         </div>
       </div>
+      </Suspense>
     </div>
   )
 };
