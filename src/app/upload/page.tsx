@@ -158,9 +158,9 @@ export default function Page() {
 
 
   return (
-
+    <Suspense>
     <div className="flex flex-row justify-evenly items-center w-full m-10 space-x-10">
-      <Suspense>
+      
       <div className="flex flex-col justify-between items-center h-full space-y-5 w-full">
         <div className="flex justify-center items-center h-full w-full shadow-lg border-x-8 border-x-white overflow-scroll relative rounded-lg bg-slate-700">
           <Loading status={status}/>
@@ -206,7 +206,8 @@ export default function Page() {
           </button>
         </div>
       </div>
-      </Suspense>
+     
     </div>
+    </Suspense>
   )
 };
