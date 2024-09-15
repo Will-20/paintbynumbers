@@ -13,7 +13,7 @@ const Taglist = ({ tags }: { tags: string[]}) => {
       <div className="flex flex-col h-[30rem] bg-[#958977] space-y-2 p-4 overflow-scroll overscroll-none rounded-md shadow-inner">
         {
           tags.map((tag, index) => {
-            return <ColourTag id={index+1} colourCode={tag}/>
+            return <ColourTag key={index+1} id={index+1} colourCode={tag}/>
           })
         }
         
