@@ -14,7 +14,7 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
 
-export function ImageViewer() {
+function ImageViewer() {
   const searchParams = useSearchParams()
 
   const imageId = searchParams.get("id") ?? ""
