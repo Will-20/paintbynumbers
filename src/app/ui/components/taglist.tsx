@@ -4,10 +4,6 @@ import ColourTag from "./colourtag"
 
 const Taglist = ({ tags }: { tags: string[]}) => {
 
-
-  
-
-
   return (
     <div className='flex flex-col justify-center h-full space-x-5'>
       <div className="flex flex-col h-[30rem] bg-[#958977] space-y-2 p-4 overflow-scroll overscroll-none rounded-md shadow-inner">

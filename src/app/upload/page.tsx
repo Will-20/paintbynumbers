@@ -1,7 +1,6 @@
 "use client"
 
 import Image from 'next/image'
-import ColourTag from '../ui/components/colourtag'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import DownloadIcon from '../ui/icons/downloadicon'

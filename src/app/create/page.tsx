@@ -7,7 +7,6 @@ import FileUploadIcon from "../ui/icons/fileuploadicon"
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { customAlphabet } from 'nanoid'
 import { useRouter } from "next/navigation";
-import { max } from "react-native-reanimated";
 
 
 export default function Create() {
