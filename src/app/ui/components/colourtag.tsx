@@ -1,10 +1,11 @@
+import { integer } from "aws-sdk/clients/cloudfront";
 
 
 type Props = { children: React.ReactNode }
 
 
 // The color code should be in the form #000000
-const ColourTag = ({ colourCode }: { colourCode: string }) => {
+const ColourTag = ({ colourCode, id }: { colourCode: string, id: integer}) => {
 
   const hexNumber = parseInt('0x' + colourCode.slice(1))
 
@@ -17,7 +18,7 @@ const ColourTag = ({ colourCode }: { colourCode: string }) => {
   return (
     <div style={{ backgroundColor: colourCode }} className= "flex min-h-10 rounded-lg shadow-md justify-center align-center items-center">
       <p className={`flex ${textCol}`}>
-        {colourCode}
+        {id}: {colourCode}
       </p>
     </div>
   );

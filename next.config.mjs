@@ -11,6 +11,15 @@ const nextConfig = {
       },
     ]
   },
+  reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'paint-by-numbers-image-data.s3.eu-north-1.amazonaws.com',
+      }
+    ]
+  }
 }
 
 export default nextConfig;

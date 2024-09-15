@@ -1,5 +1,4 @@
 from celery import shared_task
-# import boto3
 from time import sleep
 
 @shared_task(bind=True)

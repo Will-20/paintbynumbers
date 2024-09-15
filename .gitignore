@@ -20,6 +20,12 @@
 .DS_Store
 *.pem
 
+# Photos
+*.png
+
+# Redis Dump
+*.rdb
+
 # debug
 npm-debug.log*
 yarn-debug.log*

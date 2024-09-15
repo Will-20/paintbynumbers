@@ -8,26 +8,30 @@ import Link from 'next/link';
 
 // Essential
 
-// TODO: Design creation page
 // TODO: Make About, Demo and FAQ page
-// TODO: Host python backend separately. 
+// TODO: Delete Image data once done
 
 // Moderately Important
 
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
 // TODO: Make file size too big notification
+// TODO: Allow user to send colours
 
 // Low-Priority
 
+// TODO: Hovering over file input convert image button is incorrect - fix it
 // TODO: Rename app to something better
 // TODO: Turn number of colours to max number of colours :P
 // TODO: Make slider colour not blue - maybe orange?
-// TODO: Make sure file upload formats are correct
 // TODO: Add github source link to pages (look at vercel blob example)
-// TODO: Update loading tag status info
+// TODO: Speed up k-means by obtaining colours on smaller image if possible
+// TODO: Come up with better way to remove small pixels
+// TODO: Make it so that when you click upload, it locks the upload button
 
 // Completed :)
+// TODO: Save colour info correctly
+// TODO: Make sure file upload formats are correct
 // TODO: Speed up k-means?
 // TODO: Fix empty cluster bug
 // TODO: Add numbers
@@ -39,6 +43,9 @@ import Link from 'next/link';
 // TODO: Find out way to remove secretkey env call in aws credentials
 // TODO: Image Preview for upload (look at vercel blob example)
 // TODO: Create loading page for upload
+// TODO: Host python backend separately. 
+// TODO: Design creation page
+// TODO: Update loading tag status info
 
 export default function Home() {
 
