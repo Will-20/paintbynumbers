@@ -1,13 +1,11 @@
 'use client';
 
-import Image from "next/image";
-import React, { ChangeEventHandler } from "react";
+import React from "react";
 import { useState } from "react";
 import FileUploadIcon from "../ui/icons/fileuploadicon"
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { customAlphabet } from 'nanoid'
 import { useRouter } from "next/navigation";
-import { onChange } from "react-native-reanimated";
 
 
 export default function Create() {
