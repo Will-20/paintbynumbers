@@ -8,6 +8,9 @@ import Link from 'next/link';
 
 // Essential
 
+// TODO: Host Redis Server
+// TODO: Host Celery Worker
+// TODO: Host Python Backend
 // TODO: Make About, Demo and FAQ page
 // TODO: Delete Image data once done
 
@@ -16,21 +19,18 @@ import Link from 'next/link';
 // TODO: Make Button Component reusable
 // TODO: Make Hero Image
 // TODO: Make file size too big notification
-// TODO: Allow user to send colours
 
 // Low-Priority
 
-// TODO: Hovering over file input convert image button is incorrect - fix it
 // TODO: Rename app to something better
 // TODO: Turn number of colours to max number of colours :P
-// TODO: Make slider colour not blue - maybe orange?
 // TODO: Add github source link to pages (look at vercel blob example)
-// TODO: Speed up k-means by obtaining colours on smaller image if possible
 // TODO: Come up with better way to remove small pixels
 // TODO: Make it so that when you click upload, it locks the upload button
 
 // Completed :)
 // TODO: Save colour info correctly
+// TODO: Hovering over file input convert image button is incorrect - fix it
 // TODO: Make sure file upload formats are correct
 // TODO: Speed up k-means?
 // TODO: Fix empty cluster bug
@@ -46,6 +46,9 @@ import Link from 'next/link';
 // TODO: Host python backend separately. 
 // TODO: Design creation page
 // TODO: Update loading tag status info
+// TODO: Allow user to send colours
+// TODO: Speed up k-means by obtaining colours on smaller image if possible
+// TODO: Make slider colour not blue - maybe orange?
 
 export default function Home() {
 

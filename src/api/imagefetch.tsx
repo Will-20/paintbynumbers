@@ -1,7 +1,5 @@
 
 
-
-
 export async function uploadToServer(imageId: string, filename: string, num_colours: string, width: string) {
     
   const formData = new FormData();
