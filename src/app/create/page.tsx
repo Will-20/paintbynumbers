@@ -6,6 +6,7 @@ import FileUploadIcon from "../ui/icons/fileuploadicon"
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { customAlphabet } from 'nanoid'
 import { useRouter } from "next/navigation";
+import { awsupload } from "../actions";
 
 
 export default function Create() {
@@ -74,13 +75,13 @@ export default function Create() {
     if (file != null) {
 
       try {
-        const client = new S3Client({
-          region: process.env.NEXT_PUBLIC_AWS_REGION,
-          credentials: {
-            accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
-            secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
-          },
-        })
+        // const client = new S3Client({
+        //   region: process.env.NEXT_PUBLIC_AWS_REGION,
+        //   credentials: {
+        //     accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
+        //     secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
+        //   },
+        // })
 
         const nanoid = customAlphabet(
           '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
@@ -88,16 +89,13 @@ export default function Create() {
         )
         
         const imageId = nanoid();
+        const formData = new FormData()
 
-        const uploadCommand = new PutObjectCommand({
-          Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-          Key: imageId,
-          Body: file,
-        });
-        
-        // TODO: Handle response here if incorrect
-        const response = await client.send(uploadCommand);
-        console.log(response) 
+        formData.append("imageId", imageId)
+        formData.append("image", file, file.name) // file is of type File
+
+        const response = await awsupload(formData)
+        console.log(response)
 
         router.push(`/upload?id=${imageId}&filename=${file.name}&width=${maxWidth}&colours=${numColours}`)
 
@@ -111,35 +109,34 @@ export default function Create() {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-evenly">
-
-<div className="flex flex-col space-y-10 items-center justify-center w-10/12 group" >
-      <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className="flex items-center justify-center w-full h-full group" >
-        <label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-96 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer group-hover:bg-gray-300 group-hover:bg-opacity-10">
-        <div className={`flex flex-col items-center justify-center pt-5 pb-6 ${data.image ? 'hidden' : ''}`}>
-          <FileUploadIcon/>
-          <p className="mb-2 text-sm"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-          <p className="text-xs ">PNG or JPG</p>
-        </div>
-        
-        <input
-              id="image-upload"
-              name="image"
-              type="file"
-              accept="image/*"
-              className="sr-only"
-              onChange={handleChange}
-            />
-            {data.image && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={data.image}
-                alt="Preview"
-                className="h-full w-full rounded-md object-cover"
+      <div className="flex flex-col space-y-10 items-center justify-center w-10/12 group" >
+        <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className="flex items-center justify-center w-full h-full group" >
+          <label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-96 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer group-hover:bg-gray-300 group-hover:bg-opacity-10">
+          <div className={`flex flex-col items-center justify-center pt-5 pb-6 ${data.image ? 'hidden' : ''}`}>
+            <FileUploadIcon/>
+            <p className="mb-2 text-sm"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+            <p className="text-xs ">PNG or JPG</p>
+          </div>
+          
+          <input
+                id="image-upload"
+                name="image"
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={handleChange}
               />
-            )}
-        </label>
+              {data.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={data.image}
+                  alt="Preview"
+                  className="h-full w-full rounded-md object-cover"
+                />
+              )}
+          </label>
+        </div>
       </div>
-    </div>
 
       <div>
         <button onClick={upload} className='min-w-52 min-h-10 items-center shadow rounded-md bg-slate-200 hover:bg-green-400 text-zinc-950'>
@@ -156,7 +153,6 @@ export default function Create() {
         <label htmlFor="steps-range" className="block mb-2text-sm font-medium text-gray-900 dark:text-white p-6">Number of Colours: {numColours}</label>
         <input onChange={() => setNumColours(parseInt((document.getElementById("steps-range-colours") as HTMLInputElement).value))} id="steps-range-colours" defaultValue="10" type="range" min="5" max="40" step="1" className="accent-orange-400  w-9/12 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></input>
       </div>
-
     </div>
 
   );

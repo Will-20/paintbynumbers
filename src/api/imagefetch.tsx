@@ -1,4 +1,4 @@
-
+"use server"
 
 export async function uploadToServer(imageId: string, filename: string, num_colours: string, width: string) {
     
@@ -16,7 +16,6 @@ export async function uploadToServer(imageId: string, filename: string, num_colo
 }
 
 export async function serverProgress(taskId: string) {
-
   const status: string = await fetch("/api/progress", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -26,4 +25,8 @@ export async function serverProgress(taskId: string) {
 
   return status
 
+}
+
+export async function getOutline() {
+  
 }

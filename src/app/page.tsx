@@ -12,7 +12,6 @@ import Link from 'next/link';
 // TODO: Host Celery Worker
 // TODO: Host Python Backend
 // TODO: Make About, Demo and FAQ page
-// TODO: Delete Image data once done
 
 // Moderately Important
 
@@ -29,6 +28,7 @@ import Link from 'next/link';
 // TODO: Make it so that when you click upload, it locks the upload button
 
 // Completed :)
+// TODO: Delete Image data once done
 // TODO: Save colour info correctly
 // TODO: Hovering over file input convert image button is incorrect - fix it
 // TODO: Make sure file upload formats are correct

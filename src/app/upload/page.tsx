@@ -22,11 +22,6 @@ function ImageViewer() {
   const num_colours = searchParams.get("colours") ?? "20"
   const width = searchParams.get("width") ?? "1400"
 
-  console.log(imageId)
-  console.log(filename)
-  console.log(num_colours)
-  console.log(width)
-
   const [allImages, setAllImages] = useState<string[]>([])
   const [index, setIndex] = useState(0)
 
@@ -46,7 +41,6 @@ function ImageViewer() {
     console.log(tags)
     if (tags.length != 0) {
       const a = document.createElement("a");
-      const enc = new TextEncoder();
       a.href = URL.createObjectURL(new Blob([colourJson]))
       a.download = filename + ".colours.txt"
       a.click()
@@ -110,8 +104,6 @@ function ImageViewer() {
 
             const json = JSON.parse(bodyContents)
             setColourJson(bodyContents)
-            console.log(json)
-            console.log(typeof(json))
             const array = Object.values(json) as string[]
             setTags(array);
           } catch (error: any){
