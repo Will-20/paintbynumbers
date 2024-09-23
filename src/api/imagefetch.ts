@@ -9,7 +9,6 @@ export async function uploadToServer(imageId: string, filename: string, num_colo
   formData.append('image_name', filename)
   formData.append('num_colours', num_colours)
   formData.append('width', width)
-
   const result: string = await fetch(process.env.BACKEND + "/api/upload", {method: "POST", body: formData})
   .then(response => response.json())
   .then(data => {return data.task_id})

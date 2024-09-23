@@ -8,9 +8,6 @@ import Link from 'next/link';
 
 // Essential
 
-// TODO: Host Redis Server
-// TODO: Host Celery Worker
-// TODO: Host Python Backend
 // TODO: Make About, Demo and FAQ page
 
 // Moderately Important
@@ -49,6 +46,9 @@ import Link from 'next/link';
 // TODO: Allow user to send colours
 // TODO: Speed up k-means by obtaining colours on smaller image if possible
 // TODO: Make slider colour not blue - maybe orange?
+// TODO: Host Redis Server
+// TODO: Host Celery Worker
+// TODO: Host Python Backend
 
 export default function Home() {
 
