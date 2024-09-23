@@ -1,13 +1,10 @@
 "use client"
 
-
 import Image from 'next/image'
 import { useState } from 'react'
 import DownloadIcon from '../ui/icons/downloadicon'
 import { useEffect } from 'react'
-import { serverProgress, uploadToServer } from '@/api/imagefetch'
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { getColours, getFilled, getOriginal, getOutline, serverProgress, uploadToServer } from '@/api/imagefetch'
 import { Loading } from '../ui/components/loading'
 import Taglist from '../ui/components/taglist'
 import { useSearchParams } from 'next/navigation'
@@ -28,14 +25,6 @@ function ImageViewer() {
   const [status, setStatus] = useState("UNSTARTED")
   const [tags, setTags] = useState<string[]>([])
   const [colourJson, setColourJson] = useState("")
-
-  const client = new S3Client({
-    region: process.env.NEXT_PUBLIC_AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? '',
-      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? '',
-    },
-  })
 
   const downloadColours = async () => {
     console.log(tags)
@@ -92,13 +81,7 @@ function ImageViewer() {
         setStatus(stat)
         if ((stat === "Finished" || stat === "Filling in regions" || stat === "Uploading Images") && tags.length == 0) {
           try {
-                  // Get the object from the Amazon S3 bucket. It is returned as a ReadableStream.
-            const data = await client.send(new GetObjectCommand({
-              Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-              Key: imageId + '_colours'
-            }));
-
-            const bodyContents = await data.Body?.transformToString() ?? "{}";
+            const bodyContents = await getColours(imageId)
             console.log(bodyContents)
             console.log(typeof(bodyContents))
 
@@ -113,29 +96,9 @@ function ImageViewer() {
         }
         if (stat === "Finished") {
           try {
-            const filledBucketParams = {
-              Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-              Key: imageId + "_filled",
-            }
-            const filledCommand = new GetObjectCommand(filledBucketParams)
-            // setFilled(await getSignedUrl(client, filledCommand))
-            const filled = await getSignedUrl(client, filledCommand)
-
-            const outlineBucketParams = {
-              Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-              Key: imageId + "_outline",
-            }
-            const outlineCommand = new GetObjectCommand(outlineBucketParams)
-            // setOutline(await getSignedUrl(client, outlineCommand))
-            const outline = await getSignedUrl(client, outlineCommand)
-
-            const originalBucketParams = {
-              Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-              Key: imageId,
-            }
-            const originalCommand = new GetObjectCommand(originalBucketParams)
-            // setOriginal(await getSignedUrl(client, originalCommand))
-            const original = await getSignedUrl(client, originalCommand)
+            const filled = await getFilled(imageId)
+            const outline = await getOutline(imageId)          
+            const original = await getOriginal(imageId)
 
             setAllImages([original, filled, outline])
             setIndex(2) // Default photo is the outlined template
