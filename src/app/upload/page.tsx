@@ -101,7 +101,7 @@ function ImageViewer() {
             const original = await getOriginal(imageId)
 
             setAllImages([original, filled, outline])
-            setIndex(2) // Default photo is the outlined template
+            setIndex(1) // Default photo is the filled template
           } catch (error: any) {
             console.log(error)
           }

@@ -89,6 +89,7 @@ export default function Create() {
         )
         
         const imageId = nanoid();
+
         const formData = new FormData()
 
         formData.append("imageId", imageId)

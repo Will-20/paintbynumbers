@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export const Navbar = () => {
     return (
-        <div className='flex flex-col items-center'>
-            <nav className="flex w-full">
+        <div className='flex flex-col items-center '>
+            <nav className="flex w-full ">
 
                 <div className='container min-w-full mx-auto flex h-[4rem] justify-end items-center'>
                     <Link href="/" className='mx-2 group'>
@@ -24,7 +24,7 @@ export const Navbar = () => {
                 </div>
 
             </nav>
-            <hr className="h-px bg-white border-0.5 opacity-90 w-[95%]"></hr>
+            <hr className="h-px bg-white border-0.5 opacity-90 w-[95%] "></hr>
         </div>
         
         

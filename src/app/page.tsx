@@ -23,6 +23,7 @@ import Link from 'next/link';
 // TODO: Add github source link to pages (look at vercel blob example)
 // TODO: Come up with better way to remove small pixels
 // TODO: Make it so that when you click upload, it locks the upload button
+// TODO: Make custom titles for the pages
 
 // Completed :)
 // TODO: Delete Image data once done
@@ -54,10 +55,10 @@ export default function Home() {
 
   return (
     
-    <div className="flex flex-col flex-auto place-content-stretch items-center justify-between pt-8 pl-24 pr-24 pb-24">
+    <div className="flex flex-col flex-auto place-content-stretch items-center justify-evenly space-x-10 pt-8 pl-14 pr-14 pb-24">
 
       <div className = "flex items-stretch grow gap-10 justify-between p-10 ">
-        <div className="basis-3/6 flex flex-col gap-10 ">
+        <div className="basis-1/3 flex flex-col gap-10 ">
           <div className="flex basis-1/3 text-center justify-between ">
             <p className="flex font-bold text-center items-center justify-center text-white text-6xl">
             Create Your Masterpiece
@@ -81,22 +82,34 @@ export default function Home() {
   
           </div>
         </div>
+      {/* Use z-axis */}
+        <div className="flex basis-2/3 relative">
 
-        {/* Use z-axis */}
-        {/* <div className="basis-3/5 flex relative border-2 border-emerald-50">
-          <div className="w-72 h-40 z-30 bg-green-400 transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute rounded-lg">
+          <Image
+            src="/images/butterfly1.jpg"
+            width={1400}
+            height={785}
+            alt="Butterfly"
+            className="min-w-[30rem] max-w-[30rem] z-30 transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute top-0 left-10 rounded-lg shadow-xl"
+          />
 
-          </div>
-          <div className="w-72 h-40 z-20 bg-yellow-400 transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute -top-4 -left-4 rounded-lg">
+          <Image
+            src="/images/butterfly2.jpg"
+            width={1400}
+            height={785}
+            alt="Butterfly"
+            className="min-w-[30rem] max-w-[30rem] z-20 hover:z-40 transform transition-all hover:-skew-x-12 hover:skew-y-12 absolute top-1/3 left-1/2 rounded-lg shadow-xl"
+          />
 
-          </div>
-          <div className="w-72 h-40 z-10 bg-red-400 transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute -top-8 -left-8 rounded-lg">
+          <Image
+            src="/images/butterfly3.jpg"
+            width={1400}
+            height={785}
+            alt="Butterfly"
+            className="min-w-[30rem] max-w-[30rem] hover:z-50 z-10 transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute top-2/3 left-10 rounded-lg shadow-xl"
+          />
 
-          </div>
-          <div className="w-72 h-40 z-0 bg-black transform transition-all hover:skew-x-12 hover:-skew-y-12 absolute -top-12 -left-12 rounded-lg">
-
-          </div>
-        </div> */}
+        </div>
       </div>
       
 
