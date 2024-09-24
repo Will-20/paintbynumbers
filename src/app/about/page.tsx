@@ -38,7 +38,7 @@ export default function About() {
         </header>
         
         <p className="text-slate-300">
-          We're proud to announce that this project is entirely open source. We believe in the power of community-driven development and welcome contributions from developers around the world. You can find our source code on GitHub (link to be added).
+          We&#39;re proud to announce that this project is entirely open source. We believe in the power of community-driven development and welcome contributions from developers around the world. You can find our source code on GitHub (link to be added).
         </p>
 
         <header className="text-white text-lg">
@@ -55,7 +55,7 @@ export default function About() {
         
         <p className="text-slate-300">
           Ready to turn your photos into paint-by-numbers art? Upload an image and start creating your custom template today!
-          For any questions, feedback, or support, please don't hesitate to contact us. Happy painting!        
+          For any questions, feedback, or support, please don&#39;t hesitate to contact us. Happy painting!        
         </p>
   
         
