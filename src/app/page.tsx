@@ -13,12 +13,11 @@ import Link from 'next/link';
 // Moderately Important
 
 // TODO: Make Button Component reusable
-// TODO: Make Hero Image
 // TODO: Make file size too big notification
+// TODO: Replace all console.log calls
 
 // Low-Priority
 
-// TODO: Rename app to something better
 // TODO: Turn number of colours to max number of colours :P
 // TODO: Add github source link to pages (look at vercel blob example)
 // TODO: Come up with better way to remove small pixels
@@ -50,6 +49,7 @@ import Link from 'next/link';
 // TODO: Host Redis Server
 // TODO: Host Celery Worker
 // TODO: Host Python Backend
+// TODO: Make Hero Image
 
 export default function Home() {
 
